@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset="UTF-8' />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Usuários</title>
+
+	<link rel="stylesheet" th:href="@{/bootstrap-5.3.2-dist/css/bootstrap.min.css}">
+	<script th:src="@{/code.jquery.com_jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/bootstrap-5.3.2-dist/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+	<div th:insert="fragments/publica-nav :: menuSuperior"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col"></div>
+			<h1>Lista de Usuários</h1>
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Login</th>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>Nascimento</th>
+						<th>E-mail</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${usuarios.empty}">
+						<td colspan="2">Sem usuário</td>
+					</tr>
+					<tr th:each="percorrerLista : ${usuarios}">
+						<td><span th:text="${percorrerLista.login}">Login</span></td>
+						<td><span th:text="${percorrerLista.nome}">Nome</span></td>
+						<td><span th:text="${percorrerLista.cpf}">CPF</span></td>
+						<td><span th:text="${#dates.format(percorrerLista.dataNascimento, 'dd/MM/yyyy')}">Nascimento</span></td>
+						<td><span th:text="${percorrerLista.email}">E-Mail</span></td>
+					</tr>
+				</tbody>
+
+			</table>
+			<div class="colum">
+				<h2 th:text="${msnBemVindo}"></h2>
+			</div>
+		</div>
+	</div>
+</body>
+
+
+
+
+
+
+</html>

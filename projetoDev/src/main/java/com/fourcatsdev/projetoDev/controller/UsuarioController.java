@@ -36,5 +36,11 @@ public class UsuarioController {
 		attributes.addFlashAttribute("mensagem","Usuário salvo com sucesso!");
 		return "redirect:/usuario/novo";
 	}
+	
+	@RequestMapping("/admin/listar")
+	public String listarUsuario(Model model) {
+		model.addAttribute("usuarios", usuarioRepository.findAll());
+		return "/auth/admin/admin-listar-usuario";
+	}
 
 }
