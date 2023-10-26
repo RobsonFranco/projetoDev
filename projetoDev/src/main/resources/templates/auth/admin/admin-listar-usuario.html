@@ -18,6 +18,10 @@
 		<div class="row">
 			<div class="col"></div>
 			<h1>Lista de Usuários</h1>
+			<div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+				<button type="button" class"btn-close" data-bs-dismiss="alert"></button>
+				<span th:text="${mensagem}"></span>
+			</div>
 
 			<table class="table table-striped">
 				<thead>
@@ -34,18 +38,25 @@
 						<td colspan="2">Sem usuário</td>
 					</tr>
 					<tr th:each="percorrerLista : ${usuarios}">
-						<td><span th:text="${percorrerLista.login}">Login</span></td>
+						<td><span th:text="${percorrerLista.login}">Login</span>
 						<td><span th:text="${percorrerLista.nome}">Nome</span></td>
 						<td><span th:text="${percorrerLista.cpf}">CPF</span></td>
-						<td><span th:text="${#dates.format(percorrerLista.dataNascimento, 'dd/MM/yyyy')}">Nascimento</span></td>
+						<td><span
+								th:text="${#dates.format(percorrerLista.dataNascimento, 'dd/MM/yyyy')}">Nascimento</span>
+						</td>
 						<td><span th:text="${percorrerLista.email}">E-Mail</span></td>
+						<td>
+							<a class="btn btn-outline-danger btn-sm"
+								th:href="@{/usuario/admin/apagar/{id}(id=${percorrerLista.id})}"
+								th:data-confirm-delete="|Você gostaria de apagar ${percorrerLista.nome}?|"
+								onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> APAGAR
+							</a>
+						</td>
 					</tr>
+
 				</tbody>
 
 			</table>
-			<div class="colum">
-				<h2 th:text="${msnBemVindo}"></h2>
-			</div>
 		</div>
 	</div>
 </body>
