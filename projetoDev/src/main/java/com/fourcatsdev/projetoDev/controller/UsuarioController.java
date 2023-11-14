@@ -65,12 +65,12 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/editar/{id}")
-	public String updateUsuario(@PathVariable("id") long id, @Valid Usuario usuario, BindingResult result) {
+	public String updateUsuario(@PathVariable("id") long id, @Valid Usuario usuarios, BindingResult result) {
 		if (result.hasErrors()) {
-			usuario.setId(id);
+			usuarios.setId(id);
 			return "/auth/user/user-alterar-usuario";
 		}
-		usuarioRepository.save(usuario);
+		usuarioRepository.save(usuarios);
 		return "redirect:/usuario/listar";
 		
 	}
