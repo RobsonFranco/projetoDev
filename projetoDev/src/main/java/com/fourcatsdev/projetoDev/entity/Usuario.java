@@ -1,17 +1,22 @@
 package com.fourcatsdev.projetoDev.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.JoinColumn;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -50,6 +55,12 @@ public class Usuario {
 	private String login;
 	
 	private boolean ativo;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="usuario_permissoes",
+	joinColumns = @JoinColumn(name = "usuario_id"),
+	inverseJoinColumns = @JoinColumn(name = "permissoes_id"))
+	private List<Permissoes> permissoes;
 	
 	
 	
@@ -101,6 +112,14 @@ public class Usuario {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+	public List<Permissoes> getPermissoes() {
+		return permissoes;
+	}
+	public void setPermissoes(List<Permissoes> permissoes) {
+		this.permissoes = permissoes;
+	}
+	
+	
 	
 	
 }
