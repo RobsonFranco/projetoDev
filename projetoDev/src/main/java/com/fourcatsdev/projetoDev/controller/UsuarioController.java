@@ -63,6 +63,7 @@ public class UsuarioController {
 	@RequestMapping("/listar")
 	public String listarUsuario(Model model) {
 		model.addAttribute("usuarios", usuarioRepository.findAll());
+		model.addAttribute("listaPermissoes", repPermissoes.findAll());
 		return "/auth/admin/admin-listar-usuario";
 	}
 
@@ -94,6 +95,18 @@ public class UsuarioController {
 		usuarioRepository.save(usuario);
 		return "redirect:/usuario/listar";
 		
+	}
+	
+	@GetMapping("/editarPermissao/{id}")
+	public String updateUsuarioPapel(@PathVariable("id") long id,Model model) {
+		Optional<Usuario> usuarioVelho = usuarioRepository.findById(id);
+		if(!usuarioVelho.isPresent()) {
+			throw new IllegalArgumentException("Usuário Inválido:" + id);
+		}
+		Usuario usuario = usuarioVelho.get();
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaPermissoes", repPermissoes.findAll());
+		return "/auth/admin/admin-editar-papel-usuario";
 	}
 	
 }

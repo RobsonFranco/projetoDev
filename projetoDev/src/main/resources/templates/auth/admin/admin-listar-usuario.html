@@ -31,6 +31,7 @@
 						<th>CPF</th>
 						<th>Nascimento</th>
 						<th>E-mail</th>
+						<th>Permissões</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -45,6 +46,12 @@
 								th:text="${#dates.format(percorrerLista.dataNascimento, 'dd/MM/yyyy')}">Nascimento</span>
 						</td>
 						<td><span th:text="${percorrerLista.email}">E-Mail</span></td>
+						
+						<td><th:block th:each="pp : ${listaPermissoes}">
+							<div th:if="${#lists.contains(percorrerLista.permissoes, pp)}" class="form-check">
+								<label th:text="${pp.permissoes}"></label>
+							</div>
+						</th:block></td>
 						<td>
 							<a class="btn btn-outline-danger btn-sm"
 								th:href="@{/usuario/admin/apagar/{id}(id=${percorrerLista.id})}"
@@ -55,6 +62,11 @@
 						<td>
 							<a class="btn btn-outline-primary btn-sm"
 								th:href="@{/usuario/editar/{id}(id=${percorrerLista.id})}"> EDITAR
+							</a>
+						</td>
+						<td>
+							<a class="btn btn-outline-primary btn-sm"
+								th:href="@{/usuario/editarPermissao/{id}(id=${percorrerLista.id})}"> PERMISSÃO
 							</a>
 						</td>
 					</tr>

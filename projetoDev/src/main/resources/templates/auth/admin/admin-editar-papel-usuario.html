@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Teste</title>
+
+	<link rel="stylesheet" th:href="@{/bootstrap-5.3.2-dist/css/bootstrap.min.css}">
+	<script th:src="@{/code.jquery.com_jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/bootstrap-5.3.2-dist/js/bootstrap.min.js}"></script>
+
+	<style>
+		.aviso {
+			color: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:insert="fragments/publica-nav :: menuSuperior"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col"></div>
+			<h2> Alterar Permissões</h2>
+			<form th:action="@{/usuario/editarPermissao/{id}(id=${usuario.id})}" th:object="${usuario}" method="post">
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Nome:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{nome}" disabled>
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">CPF:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{cpf}" disabled>
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Nascimento:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{dataNascimento}" disabled>
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('dataNascimento')}"
+							th:errors="*{dataNascimento}"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Email:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{email}" disabled>
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Login:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{login}" disabled>
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Login:</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" th:field="*{login}">
+					</div>
+					<div class="col-sm-5">
+						<span class="aviso" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label class="col-sm-1 col-form-label">Permissões:</label>
+					<div class="col-sm-2">
+						<th:block th:each="pp : ${listaPermissoes}">
+							<div th:if="${#lists.contains(usuario.permissoes, pp)}" class="form-check">
+								<input class="form-check-input" type="checkbox" name="permissoesApresentadas" th:value="${pp.id}" checked/>
+								<label class="form-check-label" th:text="${pp.permissoes}"></label>
+							</div>
+							<div th:unless="${#lists.contains(usuario.permissoes, pp)}" class="form-check">
+								<input class="form-check-input" type="checkbox" name="permissoesApresentadas" th:value="${pp.id}"/>
+								<label class="form-check-label" th:text="${pp.permissoes}"></label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+
+
+
+				<input class="btn btn-primary" type="submit" value="Alterar">
+
+			</form>
+
+
+		</div>
+	</div>
+</body>
+
+
+
+
+
+
+</html>
