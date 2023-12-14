@@ -46,12 +46,12 @@
 								th:text="${#dates.format(percorrerLista.dataNascimento, 'dd/MM/yyyy')}">Nascimento</span>
 						</td>
 						<td><span th:text="${percorrerLista.email}">E-Mail</span></td>
-						
-						<td><th:block th:each="pp : ${listaPermissoes}">
-							<div th:if="${#lists.contains(percorrerLista.permissoes, pp)}" class="form-check">
-								<label th:text="${pp.permissoes}"></label>
-							</div>
-						</th:block></td>
+
+						<td>
+							<th:block th:each="percorrePermissoes : ${percorrerLista.permissoes}">
+								<label th:text="${percorrePermissoes.permissoes}"></label>
+							</th:block>
+						</td>
 						<td>
 							<a class="btn btn-outline-danger btn-sm"
 								th:href="@{/usuario/admin/apagar/{id}(id=${percorrerLista.id})}"

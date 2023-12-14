@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fourcatsdev.projetoDev.entity.Permissoes;
@@ -63,7 +64,6 @@ public class UsuarioController {
 	@RequestMapping("/listar")
 	public String listarUsuario(Model model) {
 		model.addAttribute("usuarios", usuarioRepository.findAll());
-		model.addAttribute("listaPermissoes", repPermissoes.findAll());
 		return "/auth/admin/admin-listar-usuario";
 	}
 
@@ -81,8 +81,7 @@ public class UsuarioController {
 		if(!usuarioVelho.isPresent()) {
 			throw new IllegalArgumentException("Usuário Inválido:" + id);
 		}
-		Usuario usuario = usuarioVelho.get();
-		model.addAttribute("usuario", usuario);
+		model.addAttribute("usuario", usuarioVelho.get());
 		return "/auth/user/user-alterar-usuario";
 	}
 
@@ -98,15 +97,39 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/editarPermissao/{id}")
-	public String updateUsuarioPapel(@PathVariable("id") long id,Model model) {
+	public String updateUsuarioPermissoes(@PathVariable("id") long id,Model model) {
 		Optional<Usuario> usuarioVelho = usuarioRepository.findById(id);
 		if(!usuarioVelho.isPresent()) {
 			throw new IllegalArgumentException("Usuário Inválido:" + id);
 		}
-		Usuario usuario = usuarioVelho.get();
-		model.addAttribute("usuario", usuario);
+		model.addAttribute("usuario", usuarioVelho.get());
 		model.addAttribute("listaPermissoes", repPermissoes.findAll());
-		return "/auth/admin/admin-editar-papel-usuario";
+		return "/auth/admin/admin-editar-permissao-usuario";
+	}
+	
+	@PostMapping("/editarPermissao/{id}")
+	public String updateUsuarioPermissoes(@PathVariable("id") long id, @RequestParam(value="permissoesApresentadas", required=false) long[] permissoesApresentadas,Usuario usuario, RedirectAttributes attributes) {
+		if (permissoesApresentadas==null) {
+			usuario.setId(id);
+			attributes.addFlashAttribute("mensagem","Pelo menos uma permissão deve estar selecionada.");
+			return "redirect:/usuario/editarPermissao/"+id;
+		}else {
+			List<Permissoes> permissoes = new ArrayList<Permissoes>();
+			for (int i = 0; i < permissoesApresentadas.length;i++) {
+				Optional<Permissoes> permissaoOptional = repPermissoes.findById(permissoesApresentadas[i]);
+				if( permissaoOptional.isPresent()) {
+					permissoes.add(permissaoOptional.get());
+				}
+			}
+			Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+			if(usuarioOptional.isPresent()) {
+				usuarioOptional.get().setPermissoes(permissoes);
+				usuarioRepository.save(usuarioOptional.get());
+			}
+			
+		}
+		return "redirect:/usuario/listar";
+		
 	}
 	
 }
